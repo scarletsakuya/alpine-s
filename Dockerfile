@@ -1,27 +1,31 @@
 FROM hermsi/alpine-sshd:latest
 
+#system
 ARG TZ="Asia/Shanghai"
 
 ENV TZ ${TZ}
 ENV V2RAY_LOG_DIR /var/log/v2ray
 ENV V2RAY_CONFIG_DIR /etc/v2ray/
+ENV ROOT_PASSWORD root
 
-
-
+#nomal setup
 
 #install v2ray
 
 #install efb
 
+#make dir
+    && mkdir -p /var/run/sshd \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/ \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
 
+#COPY config file
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 COPY squid.conf /etc/squid/squid.conf
-COPY 
-COPY
+COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram\config.yaml
+COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
+COPY v2rayconfig.json /etc/v2ray/config.json
 COPY entrypoint.sh /usr/local/bin/
-
-#system
-ENV ROOT_PASSWORD root
 
 #ss
 ENV SS_PORT=8888
@@ -45,7 +49,7 @@ ENV KCP_WRITEBUFF=2
 
 #EFB
 ENV TOKEN=88888888:00000000000000000
-ENV USER=999999999
+ENV ADM=999999999
 
 EXPOSE ${SS_PORT}/tcp
 EXPOSE ${SS_PORT}/udp
