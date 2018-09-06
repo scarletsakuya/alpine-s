@@ -13,9 +13,12 @@ ENV V2RAY_CONFIG_DIR /etc/v2ray/
 
 #install efb
 
-COPY entrypoint.sh /usr/local/bin/
+
+COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
+COPY squid.conf /etc/squid/squid.conf
 COPY 
 COPY
+COPY entrypoint.sh /usr/local/bin/
 
 #system
 ENV ROOT_PASSWORD root
