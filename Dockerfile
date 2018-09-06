@@ -4,15 +4,32 @@ FROM hermsi/alpine-sshd:latest
 ARG TZ="Asia/Shanghai"
 
 ENV TZ ${TZ}
-ENV V2RAY_LOG_DIR /var/log/v2ray
-ENV V2RAY_CONFIG_DIR /etc/v2ray/
 ENV ROOT_PASSWORD root
 
 #nomal setup
-
+RUN set -ex && \
+    && apk --no-cache upgrade \
+    && apk add --no-cache --virtual .build-deps ca-certificates curl tzdata \
+    && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo ${TZ} > /etc/timezone \
+    
 #install v2ray
+ENV V2RAY_LOG_DIR /var/log/v2ray
+ENV V2RAY_CONFIG_DIR /etc/v2ray/
+ENV V2RAY_VERSION v3.38
+ENV V2RAY_DOWNLOAD_URL https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip
+
+curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL} \
+unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
+mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/v2ray /usr/bin \
+    && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/vpoint_vmess_freedom.json /etc/v2ray/config.json \
+    && chmod +x /usr/bin/v2ray \
+    && apk del curl \
 
 #install efb
+
+#make clean
+rm -rf /tmp/v2ray /var/cache/apk/*
 
 #make dir
     && mkdir -p /var/run/sshd \
