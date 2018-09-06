@@ -1,0 +1,5 @@
+token: "${TOKEN}"
+admins: ${ADM}
+flags:
+            chats_per_page: 20
+            network_error_prompt_interval: 250
