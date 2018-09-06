@@ -4,7 +4,8 @@ FROM hermsi/alpine-sshd:latest
 ARG TZ="Asia/Shanghai"
 
 ENV TZ ${TZ}
-ENV ROOT_PASSWORD root
+ENV ROOT_PASSWORD=root
+ENV HTTP_USER=sakuya
 
 #nomal setup
 RUN set -ex && \
@@ -14,10 +15,10 @@ RUN set -ex && \
     && echo ${TZ} > /etc/timezone \
     
 #install v2ray
-ENV V2RAY_LOG_DIR /var/log/v2ray
-ENV V2RAY_CONFIG_DIR /etc/v2ray/
-ENV V2RAY_VERSION v3.38
-ENV V2RAY_DOWNLOAD_URL https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip
+ENV V2RAY_LOG_DIR=/var/log/v2ray
+ENV V2RAY_CONFIG_DIR=/etc/v2ray/
+ENV V2RAY_VERSION=v3.38
+ENV V2RAY_DOWNLOAD_URL=https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip
 
 RUN curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL} \
     && unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
