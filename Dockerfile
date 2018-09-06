@@ -19,22 +19,21 @@ ENV V2RAY_CONFIG_DIR /etc/v2ray/
 ENV V2RAY_VERSION v3.38
 ENV V2RAY_DOWNLOAD_URL https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip
 
-curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL} \
-unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
-mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/v2ray /usr/bin \
+RUN curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL} \
+    && unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
+    && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/v2ray /usr/bin \
     && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/vpoint_vmess_freedom.json /etc/v2ray/config.json \
     && chmod +x /usr/bin/v2ray \
-    && apk del curl \
-
+    && apk del curl
+    
 #install efb
-
-#make clean
-rm -rf /tmp/v2ray /var/cache/apk/*
-
-#make dir
-    && mkdir -p /var/run/sshd \
+RUN mkdir -p /var/run/sshd \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
+    
+    
+#make clean
+rm -rf /tmp/v2ray /var/cache/apk/*
 
 #COPY config file
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
