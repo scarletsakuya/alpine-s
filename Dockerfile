@@ -32,7 +32,7 @@ RUN set -ex \
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
     
 #make clean
-    && apk del .build-deps
+    && apk del .build-deps \
     && rm -rf /tmp/v2ray /var/cache/apk/*
     
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
