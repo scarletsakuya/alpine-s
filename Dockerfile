@@ -8,7 +8,7 @@ ENV ROOT_PASSWORD=root
 ENV HTTP_USER=sakuya
 
 #nomal setup
-RUN set -ex && \
+RUN set -ex \
     && apk --no-cache upgrade \
     && apk add --no-cache --virtual .build-deps ca-certificates curl tzdata \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
@@ -34,7 +34,7 @@ RUN mkdir -p /var/run/sshd \
     
     
 #make clean
-rm -rf /tmp/v2ray /var/cache/apk/*
+    && rm -rf /tmp/v2ray /var/cache/apk/*
 
 #COPY config file
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
