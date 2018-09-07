@@ -24,14 +24,12 @@ RUN wget -O /tmp/v2ray/v2ray.zip ${V2RAY_DOWNLOAD_URL} \
     && unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/ \
     && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/v2ray /usr/bin \
     && mv /tmp/v2ray/v2ray-${V2RAY_VERSION}-linux-64/vpoint_vmess_freedom.json /etc/v2ray/config.json \
-    && chmod +x /usr/bin/v2ray \
-    && apk del curl
+    && chmod +x /usr/bin/v2ray 
     
 #install efb
 RUN mkdir -p /var/run/sshd \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
-    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
-    
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \ 
     
 #make clean
     && rm -rf /tmp/v2ray /var/cache/apk/*
