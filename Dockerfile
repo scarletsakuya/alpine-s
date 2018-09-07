@@ -29,7 +29,7 @@ RUN set -ex \
     && pip3 install --no-cache-dir efb-wechat-slave \
     && mkdir -p /var/run/sshd \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
-    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram 
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
     
 #make clean
     && apk del .build-deps
