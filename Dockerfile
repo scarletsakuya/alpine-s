@@ -14,9 +14,10 @@ ENV ADM=999999999
 #nomal setup
 RUN set -ex \
     && apk --no-cache upgrade \
-    && apk add --no-cache --virtual .build-deps ca-certificates tzdata ffmpeg libmagic python3 py3-numpy py3-pillow libwebp git py3-yaml py3-requests gcc\
+    && apk add --no-cache --virtual .build-deps ca-certificates tzdata ffmpeg \
+    libmagic python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests gcc\
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
-    && echo ${TZ} > /etc/timezone \
+    && echo ${TZ} > /etc/timezone 
     
     #install efb
 RUN set -ex \
@@ -26,7 +27,7 @@ RUN set -ex \
     && pip3 install efb-wechat-slave \
     && mkdir -p /var/run/sshd \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
-    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \ 
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram 
     
 #make clean
 #    && rm -rf /tmp/v2ray /var/cache/apk/*
