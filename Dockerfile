@@ -15,7 +15,7 @@ ENV ADM=999999999
 RUN set -ex \
     && apk --no-cache upgrade \
     && apk add --no-cache --virtual .build-deps ca-certificates tzdata ffmpeg \
-    libmagic python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python-dev python3-dev gcc\
+    libmagic python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev gcc\
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone 
     
