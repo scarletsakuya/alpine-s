@@ -11,7 +11,7 @@ ENV HTTP_USER=sakuya
 RUN set -ex \
     && apk --no-cache upgrade \
     && apk add --no-cache --virtual .build-deps ca-certificates tzdata openssh \
-    squid nghttp2 apache2\
+    squid nghttp2 apache2-utils \
     python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev \
     libffi-dev musl-dev openssl-dev gcc ffmpeg libmagic \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
