@@ -1,4 +1,4 @@
-FROM hermsi/alpine-sshd:latest
+FROM library/alpine:latest
 
 #system
 ARG TZ="Asia/Shanghai"
@@ -10,9 +10,17 @@ ENV HTTP_USER=sakuya
 #nomal setup
 RUN set -ex \
     && apk --no-cache upgrade \
-    && apk add --no-cache --virtual .build-deps ca-certificates tzdata \
+    && apk add --no-cache --virtual .build-deps ca-certificates tzdata openssh \
+    squid nghttp2 \
+    python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev \
+    libffi-dev musl-dev openssl-dev gcc ffmpeg libmagic \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
-    && echo ${TZ} > /etc/timezone
+    && echo ${TZ} > /etc/timezone \
+    && mkdir -p /var/run/sshd \
+    && sed -ri s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
+    && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
+    && echo "root:${ROOT_PASSWORD}" | chpasswd \
+    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
     
 #install v2ray
 ENV V2RAY_LOG_DIR=/var/log/v2ray
@@ -27,15 +35,20 @@ RUN mkdir -p /tmp/v2ray \
     && chmod +x /usr/bin/v2ray 
     
 #install efb
-RUN mkdir -p /var/run/sshd \
+RUN set -ex \
+    && pip3 install --upgrade pip \
+    && pip3 install --no-cache-dir ehforwarderbot \
+    && pip3 install --no-cache-dir efb-telegram-master \
+    && pip3 install --no-cache-dir efb-wechat-slave \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \ 
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.wechat \
     
 #make clean
-    && rm -rf /tmp/v2ray /var/cache/apk/* /root/.cache/*
+    && apk del .build-deps \
+    && rm -rf /tmp/* /var/cache/apk/* /root/.cache/*
 
-#COPY config file
+#copy config file
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 COPY squid.conf /etc/squid/squid.conf
 COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
@@ -66,6 +79,11 @@ ENV KCP_WRITEBUFF=2
 #EFB
 ENV TOKEN=88888888:00000000000000000
 ENV ADM=999999999
+
+#http proxy
+ENV HTTP_USER=sakuya
+ENV SERVER_CRT=none
+ENV SERVER_KEY=none
 
 EXPOSE ${SS_PORT}/tcp
 EXPOSE ${SS_PORT}/udp
