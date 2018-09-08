@@ -11,9 +11,6 @@ ENV HTTP_USER=sakuya
 RUN set -ex \
     && apk --no-cache upgrade \
     && apk add --no-cache --virtual .build-deps ca-certificates tzdata openssh \
-    squid nghttp2 apache2-utils \
-    python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev \
-    libffi-dev musl-dev openssl-dev gcc ffmpeg libmagic \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && mkdir -p /var/run/sshd \
@@ -34,7 +31,9 @@ RUN mkdir -p /tmp/v2ray \
     && chmod +x /usr/bin/v2ray 
     
 #install efb
-RUN set -ex \
+RUN apk add --no-cache --virtual .build-deps python3 py3-numpy py3-pillow libwebp py3-yaml py3-requests python3-dev \
+    libffi-dev musl-dev openssl-dev gcc ffmpeg libmagic \
+    && set -ex \
     && pip3 install --upgrade pip \
     && pip3 install --no-cache-dir ehforwarderbot \
     && pip3 install --no-cache-dir efb-telegram-master \
@@ -49,7 +48,8 @@ ENV HTTP_USER=sakuya
 ENV SERVER_CRT=none
 ENV SERVER_KEY=none
 
-RUN htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
+RUN apk add --no-cache --virtual .build-deps squid nghttp2 apache2-utils \
+    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
     
 #make clean
     && apk del .build-deps \
