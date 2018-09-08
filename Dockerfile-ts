@@ -19,8 +19,7 @@ RUN set -ex \
     && mkdir -p /var/run/sshd \
     && sed -ri s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
-    && echo "root:${ROOT_PASSWORD}" | chpasswd \
-    && htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
+    && echo "root:${ROOT_PASSWORD}" | chpasswd
     
 #install v2ray
 ENV V2RAY_LOG_DIR=/var/log/v2ray
@@ -43,6 +42,14 @@ RUN set -ex \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \ 
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.wechat \
+    
+#setup http proxy
+#http proxy
+ENV HTTP_USER=sakuya
+ENV SERVER_CRT=none
+ENV SERVER_KEY=none
+
+RUN htpasswd -b -c /etc/squid/password ${HTTP_USER} ${ROOT_PASSWORD} \
     
 #make clean
     && apk del .build-deps \
@@ -79,11 +86,6 @@ ENV KCP_WRITEBUFF=2
 #EFB
 ENV TOKEN=88888888:00000000000000000
 ENV ADM=999999999
-
-#http proxy
-ENV HTTP_USER=sakuya
-ENV SERVER_CRT=none
-ENV SERVER_KEY=none
 
 EXPOSE ${SS_PORT}/tcp
 EXPOSE ${SS_PORT}/udp
