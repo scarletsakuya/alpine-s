@@ -30,6 +30,7 @@ RUN set -ex \
     && mkdir -p /var/run/sshd \
     && mkdir -p /root/.ehforwarderbot/profiles/default/ \
     && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.telegram \
+    && mkdir -p /root/.ehforwarderbot/profiles/default/blueset.wechat \
     
 #make clean
     && apk del .build-deps \
@@ -37,7 +38,7 @@ RUN set -ex \
     
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 COPY squid.conf /etc/squid/squid.conf
-COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/bluestet.telegram\config.yaml
+COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
 COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
 COPY entrypoint.sh /usr/local/bin/
 
