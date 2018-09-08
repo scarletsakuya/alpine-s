@@ -20,8 +20,8 @@ sed -i "s/\[KCP_UPLINK\]/${KCP_UPLINK}/g" /etc/v2ray/config.json
 sed -i "s/\[KCP_DOWNLINK\]/${KCP_DOWNLINK}/g" /etc/v2ray/config.json
 sed -i "s/\[KCP_READBUFF\]/${KCP_READBUFF}/g" /etc/v2ray/config.json
 sed -i "s/\[KCP_WRITEBUFF\]/${KCP_WRITEBUFF}/g" /etc/v2ray/config.json
-sed -i "s/\[]/${TOKEN}/g" /root/.ehforwarderbot/profiles/default/blueset.telegram\config.yaml
-sed -i "s/\[]/${ADM}/g" /root/.ehforwarderbot/profiles/default/blueset.telegram\config.yaml
+sed -i "s/\[]/${TOKEN}/g" /root/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
+sed -i "s/\[]/${ADM}/g" /root/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
 
 for i in "$@"; do
 	bash $i
