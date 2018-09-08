@@ -5,11 +5,15 @@ ARG TZ="Asia/Shanghai"
 
 ENV TZ ${TZ}
 ENV ROOT_PASSWORD=root
-ENV HTTP_USER=sakuya
 
 #EFB
 ENV TOKEN=88888888:00000000000000000
 ENV ADM=999999999
+
+#http proxy
+ENV HTTP_USER=sakuya
+ENV SERVER_CRT=none
+ENV SERVER_KEY=none
 
 #nomal setup
 RUN set -ex \
@@ -34,7 +38,7 @@ RUN set -ex \
     
 #make clean
     && apk del .build-deps \
-    && rm -rf /tmp/v2ray /var/cache/apk/*
+    && rm -rf /tmp/v2ray /var/cache/apk/* /root/.cache/*
     
 COPY nghttpx.conf /etc/nghttpx/nghttpx.conf
 COPY squid.conf /etc/squid/squid.conf
@@ -42,4 +46,4 @@ COPY blueset.telegram-config.yaml /root/.ehforwarderbot/profiles/default/blueset
 COPY default-config.yaml /root/.ehforwarderbot/profiles/default/config.yaml
 COPY entrypoint.sh /usr/local/bin/
 
-ENTRYPOINT [ "bash", "/usr/bin/entrypoint.sh" ]
+ENTRYPOINT [ "bash", "/usr/local/bin/entrypoint.sh" ]
